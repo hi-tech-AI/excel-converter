@@ -239,23 +239,7 @@ def complete_column(table_df, search_key, function, column):
     else:
         print(f"No columns containing {search_key} found")
 
-if __name__ == "__main__":
-    file_path = 'testing/etrade/2022_Etrade_v1 (1).csv'
-    table_df = extract_table_from_excel(file_path)
-    print(table_df)
-
-    check_date_list = ['trade_date', 'TransactionDate', 'Date', 'TD']
-    check_time_list = ['time', 'Activity Time']
-    check_symbol_list = ['instrument.cns_equity_master.symbol', 'Symbol']
-    check_quantity_list = ['quantity', 'Quantity']
-    check_price_list = ['price', 'Price']
-    check_commission_list = ['fee_commission', 'Commission', 'Fees & Comm']
-    check_action_list = ['side_direction', 'TransactionType', 'Action', 'Transaction']
-    complete_column(table_df, check_date_list, clean_date_format, 1)
-    complete_column(table_df, check_time_list, clean_time_format, 2)
-    complete_column(table_df, check_symbol_list, clean_symbol_format, 3)
-    complete_column(table_df, check_quantity_list, clean_quantity_format, 4)
-    complete_column(table_df, check_price_list, clean_price_format, 5)
-    complete_column(table_df, check_commission_list, clean_commission_format, 6)
-    complete_column(table_df, check_action_list, clean_action_format, 7)
-    wb.save("result.xlsx")
+def generate_final_result(file_path):
+    df = pd.read_excel(file_path)
+    df_cleaned = df.dropna(subset=['Action'])
+    df_cleaned.to_excel(file_path, index=False)
